@@ -1,0 +1,33 @@
+{
+  "name": "streetartmap-cologne",
+  "version": "1.0.0",
+  "description": "This is the streetartmap-cologne app",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "leaflet": "^1.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LyyAmao/StreetArtMap-Cologne.git"
+  },
+  "keywords": [
+    "map",
+    "graffiti",
+    "streetart",
+    "art",
+    "cologne",
+    "city",
+    "tourism"
+  ],
+  "author": "Ferdinand Bandus Gallastegui",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LyyAmao/StreetArtMap-Cologne/issues"
+  },
+  "homepage": "https://github.com/LyyAmao/StreetArtMap-Cologne#readme"
+}
