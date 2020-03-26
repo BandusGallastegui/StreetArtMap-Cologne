@@ -67,12 +67,65 @@
                 const data = await response.json();
                 for (i = 0; i < data.length; i++){
                     var marker = L.marker([data.rows[i].lat, data.rows[i].long]);
-                    const popup_content = data.rows[i].name + "</br>" + data.rows[i].artist + '</br> <img src="' + data.rows[i].img_loc + '"/>';
-                    marker.addTo(mymap).bindPopup(popup_content);
+
+                    var marker_popup = L.popup({
+                        minWidth:400
+                    })
+                        .setContent(data.rows[i].name + "</br>" + data.rows[i].artist + '</br> <img src="' + data.rows[i].img_loc + '"/>');
+
+                    marker.addTo(mymap).bindPopup(marker_popup);
                 }
             }
             
         </script>
+        <script>
+            var new_marker_popup = L.popup({
+                minWidth:400,
+                keepInView: true,
+                closeButton: false
+            })
 
+            async function add_marker(e){
+                var new_marker = new L.marker(e.latlng).addTo(mymap)
+                var coords = e.latlng;
+                var new_marker_popup_content = '<form role="form" id="form" onsubmit="add_marker()">' +
+                '<div class="form-group">'+
+                    '<label class="control-label col-sm-5"><strong>Name: </strong></label>'+ //name
+                    '<input type="name" id="name" name="name" class="form-control"/>'+ 
+                    
+                '</div>'+
+                '<div class="form-group">'+
+                    '<label class="control-label col-sm-5"><strong>Künstler: </strong></label>'+ //artist
+                    '<input type="artist" id="artist" name="artist" class="form-control"/>'+
+                '</div>'+
+                '<div class="form-group">'+
+                    '<label class="control-label col-sm-5"><strong>Viertel: </strong></label>'+ //artist
+                    '<input type="viertel" id="viertel" name="viertel" class="form-control"/>'+
+                '</div>'+
+                '<div class="form-group">'+
+                '<label class="control-label col-sm-5"><strong>Description: </strong></label>'+ //description
+                '<textarea class="form-control" rows="6" id="descrip" name="descript">...</textarea>'+
+                '</div>'+
+                    '<input style="display: none;" type="text" id="lat" name="lat" value="'+coords.lat.toFixed(6)+'" />'+
+                    '<input style="display: none;" type="text" id="lng" name="lng" value="'+coords.lng.toFixed(6)+'" />'+
+                '<div class="form-group">'+
+                    '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Upload Image</button></div>'+
+                '</div>'+
+                '<div class="form-group">'+
+                    '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Cancel</button></div>'+
+                    '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>'+
+                '</div>'+
+                '</form>';
+                new_marker.bindPopup(new_marker_popup_content,{
+                
+                }).openPopup();
+
+                $("#form").submit(function(e){
+                    e.preventDefault();
+                });
+            }
+
+            mymap.on('click', add_marker);
+        </script>
     </body>
 </html>
