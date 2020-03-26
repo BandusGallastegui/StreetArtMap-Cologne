@@ -18,14 +18,7 @@
         crossorigin=""></script>
 
     <!--Style for Leaflet Map-->
-    <style>
-        #mapid {
-            height: 100%;
-            position: fixed;
-            top: 0;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="css/main.css">
     <title>StreetArtMap-Cologne</title>
 
 </head>
@@ -76,12 +69,14 @@
             const data = await response.json();
             for (i = 0; i < data.length; i++) {
                 var marker = L.marker([data.rows[i].lat, data.rows[i].lon]);
-
+                var marker_popup_content = '<div class="popup-container"><h2>' + data.rows[i].name + '</h3>' +
+                        '<p>by ' + data.rows[i].artist + '</p>' +
+                        '<p>District: ' + data.rows[i].viertel + '</p></div>' +
+                        '<img class="display-images" src="data:image/jpg;base64,' + data.rows[i].img + '"/>';
                 var marker_popup = L.popup({
-                        minWidth: 400
-                    })
-                    .setContent(data.rows[i].name + "</br>" + data.rows[i].artist +
-                        '</br> <img src="data:image/jpg;base64,' + data.rows[i].img + '"/>');
+                    minWidth: 500
+                })
+                    .setContent(marker_popup_content);
 
                 marker.addTo(mymap).bindPopup(marker_popup);
             }

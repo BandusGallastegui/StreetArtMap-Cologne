@@ -1,0 +1,21 @@
+#mapid {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+.display-images {
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow:  6px 6px 12px #cccccc,-6px -6px 12px #ffffff;
+    width:100%;
+}
+.popup-container {
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow:  6px 6px 12px #cccccc,-6px -6px 12px #ffffff;
+    padding-left: 5px;
+}
+h2 {
+    color: #0080ff;
+} 
