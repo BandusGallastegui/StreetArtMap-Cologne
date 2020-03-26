@@ -66,9 +66,12 @@
                 const response = await fetch('/api');
                 const data = await response.json();
                 for (i = 0; i < data.length; i++){
-                    L.marker([data.rows[i].lat, data.rows[i].long]).addTo(mymap);
+                    var marker = L.marker([data.rows[i].lat, data.rows[i].long]);
+                    const popup_content = data.rows[i].name + "</br>" + data.rows[i].artist + '</br> <img src="' + data.rows[i].img_loc + '"/>';
+                    marker.addTo(mymap).bindPopup(popup_content);
                 }
             }
+            
         </script>
 
     </body>
