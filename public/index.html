@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-        <!--Imports for Leaflet-->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-            integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-            crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!--Import jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--Imports for Leaflet-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
 
-        <!--Style for Leaflet Map-->
-        <style>
-            #mapid {
-                height: 100%;
-                position: fixed;
-                top: 0;
-                width: 100%;
-            }
-        </style>
-        <title>StreetArtMap-Cologne</title>
+    <!--Style for Leaflet Map-->
+    <style>
+        #mapid {
+            height: 100%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+    </style>
+    <title>StreetArtMap-Cologne</title>
 
-    </head>
-    <body>
-        <!--Geolocation setup-->
-        <script>
-            /*if('geolocation' in navigator) {
+</head>
+
+<body>
+    <!--Geolocation setup-->
+    <script>
+        /*
+        if('geolocation' in navigator) {
                 console.log("Geolocation available");
                 navigator.geolocation.getCurrentPosition(async position => {
                     const lat = position.coords.latitude;
@@ -47,85 +53,102 @@
                 });
             } else {
                 console.log("Geolocation unavailable");
-            }*/
-        </script>
+            }
+        */
+    </script>
 
-        <!--Basic Leaflet Map setup-->
-        <h1>StreetArtMap-Cologne</h1>
-        <div id="mapid"></div>
-        <script>
-            const mymap = L.map('mapid').setView([50.935173, 6.953101], 13);
-            const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-            const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-            const tiles = L.tileLayer(tileUrl, { attribution });
-            tiles.addTo(mymap);
+    <!--Basic Leaflet Map setup-->
+    <h1>StreetArtMap-Cologne</h1>
+    <div id="mapid"></div>
+    <script>
+        const mymap = L.map('mapid').setView([50.935173, 6.953101], 13);
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const tiles = L.tileLayer(tileUrl, {
+            attribution
+        });
+        tiles.addTo(mymap);
 
-            //Adding POIs from Database
-            getData();
-            async function getData(){
-                const response = await fetch('/api');
-                const data = await response.json();
-                for (i = 0; i < data.length; i++){
-                    var marker = L.marker([data.rows[i].lat, data.rows[i].long]);
+        //Adding POIs from Database
+        getData();
+        async function getData() {
+            const response = await fetch('/api');
+            const data = await response.json();
+            for (i = 0; i < data.length; i++) {
+                var marker = L.marker([data.rows[i].lat, data.rows[i].lon]);
 
-                    var marker_popup = L.popup({
-                        minWidth:400
+                var marker_popup = L.popup({
+                        minWidth: 400
                     })
-                        .setContent(data.rows[i].name + "</br>" + data.rows[i].artist + '</br> <img src="' + data.rows[i].img_loc + '"/>');
+                    .setContent(data.rows[i].name + "</br>" + data.rows[i].artist +
+                        '</br> <img src="data:image/jpg;base64,' + data.rows[i].img + '"/>');
 
-                    marker.addTo(mymap).bindPopup(marker_popup);
-                }
+                marker.addTo(mymap).bindPopup(marker_popup);
             }
-            
-        </script>
-        <script>
-            var new_marker_popup = L.popup({
-                minWidth:400,
-                keepInView: true,
-                closeButton: false
-            })
+        }
+    </script>
+    <script>
+        var new_marker_popup = L.popup({
+            minWidth: 400,
+            keepInView: true,
+            closeButton: false
+        })
 
-            async function add_marker(e){
-                var new_marker = new L.marker(e.latlng).addTo(mymap)
-                var coords = e.latlng;
-                var new_marker_popup_content = '<form role="form" id="form" onsubmit="add_marker()">' +
-                '<div class="form-group">'+
-                    '<label class="control-label col-sm-5"><strong>Name: </strong></label>'+ //name
-                    '<input type="name" id="name" name="name" class="form-control"/>'+ 
-                    
-                '</div>'+
-                '<div class="form-group">'+
-                    '<label class="control-label col-sm-5"><strong>Künstler: </strong></label>'+ //artist
-                    '<input type="artist" id="artist" name="artist" class="form-control"/>'+
-                '</div>'+
-                '<div class="form-group">'+
-                    '<label class="control-label col-sm-5"><strong>Viertel: </strong></label>'+ //artist
-                    '<input type="viertel" id="viertel" name="viertel" class="form-control"/>'+
-                '</div>'+
-                '<div class="form-group">'+
-                '<label class="control-label col-sm-5"><strong>Description: </strong></label>'+ //description
-                '<textarea class="form-control" rows="6" id="descrip" name="descript">...</textarea>'+
-                '</div>'+
-                    '<input style="display: none;" type="text" id="lat" name="lat" value="'+coords.lat.toFixed(6)+'" />'+
-                    '<input style="display: none;" type="text" id="lng" name="lng" value="'+coords.lng.toFixed(6)+'" />'+
-                '<div class="form-group">'+
-                    '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Upload Image</button></div>'+
-                '</div>'+
-                '<div class="form-group">'+
-                    '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Cancel</button></div>'+
-                    '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>'+
-                '</div>'+
+        async function add_marker(e) {
+            var new_marker = new L.marker(e.latlng).addTo(mymap)
+            var coords = e.latlng;
+            var new_marker_popup_content = '<form role="form" id="form" onsubmit="add_marker()">' +
+                '<div class="form-group">' +
+                '<label class="control-label col-sm-5"><strong>Name: </strong></label>' + //name
+                '<input type="name" id="name" name="name" class="form-control" required/>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-sm-5"><strong>Künstler: </strong></label>' + //artist
+                '<input type="artist" id="artist" name="artist" class="form-control" required/>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="control-label col-sm-5"><strong>Viertel: </strong></label>' + //artist
+                '<input type="viertel" id="viertel" name="viertel" class="form-control"/>' +
+                '</div>' +
+                '<input style="display: none;" type="text" id="lat" name="lat" value="' + coords.lat.toFixed(6) +
+                '" />' +
+                '<input style="display: none;" type="text" id="lng" name="lng" value="' + coords.lng.toFixed(6) +
+                '" />' +
+                '<div class="form-group">' +
+                '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Upload Image</button></div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Cancel</button></div>' +
+                '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>' +
+                '</div>' +
                 '</form>';
-                new_marker.bindPopup(new_marker_popup_content,{
-                
-                }).openPopup();
+            new_marker.bindPopup(new_marker_popup_content, {}).openPopup();
 
-                $("#form").submit(function(e){
-                    e.preventDefault();
-                });
-            }
+            $('form').submit(async function (e) {
+                const input = $('form').serializeArray();
+                const data = {
+                    "name": input[0].value,
+                    "artist": input[1].value,
+                    "viertel": input[2].value,
+                    "lat": parseFloat(input[3].value),
+                    "lon": parseFloat(input[4].value),
+                    "img": "TODO"
+                };
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                };
+                const response = await fetch('/api', options);
+                const json = await response.json();
+                console.log(data);
+            });
+        }
 
-            mymap.on('click', add_marker);
-        </script>
-    </body>
+        mymap.on('click', add_marker);
+    </script>
+</body>
+
 </html>
