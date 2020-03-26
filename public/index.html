@@ -114,12 +114,9 @@
                 '" />' +
                 '<input style="display: none;" type="text" id="lng" name="lng" value="' + coords.lng.toFixed(6) +
                 '" />' +
-                '<form method="post" enctype"multipart/form-data">' + //File selection
-                    '<label>Select Image' +
-                        '<input id="image" name="image" type="file" accept="image/png, image/jpeg">' +
-                    '</label>' +
-                    '<button type="button" class="btn">Upload Image</button></div>' + //File upload
-                '</form>' +
+                '<div class="form-group">' +
+                '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Upload Image</button></div>' +
+                '</div>' +
                 '<div class="form-group">' +
                 '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Cancel</button></div>' +
                 '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>' +
