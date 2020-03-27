@@ -70,12 +70,12 @@
             for (i = 0; i < data.length; i++) {
                 var marker = L.marker([data.rows[i].lat, data.rows[i].lon]);
                 var marker_popup_content = '<div class="popup-container"><h2>' + data.rows[i].name + '</h3>' +
-                        '<p>by ' + data.rows[i].artist + '</p>' +
-                        '<p>District: ' + data.rows[i].viertel + '</p></div>' +
-                        '<img class="display-images" src="data:image/jpg;base64,' + data.rows[i].img + '"/>';
+                    '<p>by ' + data.rows[i].artist + '</p>' +
+                    '<p>District: ' + data.rows[i].viertel + '</p></div>' +
+                    '<img class="display-images" src="data:image/jpg;base64,' + data.rows[i].img + '"/>';
                 var marker_popup = L.popup({
-                    minWidth: 500
-                })
+                        minWidth: 500
+                    })
                     .setContent(marker_popup_content);
 
                 marker.addTo(mymap).bindPopup(marker_popup);
@@ -110,7 +110,7 @@
                 '<input style="display: none;" type="text" id="lng" name="lng" value="' + coords.lng.toFixed(6) +
                 '" />' +
                 '<div class="form-group">' +
-                '<input type="file" id="img" name="img" class="form-control" accept="image/png, image/jpeg" />' +
+                '<div style="text-align:center;" class="col-xs-4"><button type="button" class="btn">Upload Image</button></div>' +
                 '</div>' +
                 '<div class="form-group">' +
                 '<div style="text-align:center;" class="col-xs-4"><button type="submit" value="submit" class="btn btn-primary trigger-submit">Submit</button></div>' +
